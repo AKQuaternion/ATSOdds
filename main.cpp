@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include <cmath>
 #include <iostream>
 #include <iomanip>
@@ -8,15 +6,24 @@
 using std::vector;
 using std::cout;
 
-double choose(int n, int k) { return 1/((n+1)*std::beta(n-k+1,k+1)); }
-// See https://en.cppreference.com/w/cpp/experimental/special_math/beta
+const int gamesLeft = 14;
+int beginCWins = 19;
+int beginRWins = 18;
+int beginMWins = 15;
+
+vector<double> makeOddsOfkWins() {
+  vector<double> v{1};
+  for (int i = 1; i <= gamesLeft; ++i) {
+    v.push_back(v.back()/2);
+    for(auto p = v.size()-2; p >= 1; --p)
+      v[p] = (v[p]+v[p-1])/2;
+    v[0] /= 2;
+  }
+  return v;
+}
 
 int main() {
-  const int gamesLeft = 14;
-  vector<double> pOfkWins;
-  for(int i=0;i<=gamesLeft;++i)
-    pOfkWins.push_back(choose(gamesLeft,i));
-
+  auto pOfkWins = makeOddsOfkWins();
 
   return 0;
 }
