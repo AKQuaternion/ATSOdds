@@ -5,12 +5,15 @@
 using std::cout;
 using std::vector;
 
-int beginCPoints = 0;
-int beginRPoints = 0;
-int beginMPoints = 0;
-const int gamesLeft = 56;
+int beginCPoints = 22;
+int beginRPoints = 22;
+int beginMPoints = 18;
+const int gamesLeft = 7;
+const int cGamesLeft = gamesLeft;
+const int mGamesLeft = gamesLeft;
+const int rGamesLeft = gamesLeft;
 
-vector<double> makeOddsOfkWins() {
+vector<double> makeOddsOfkWins(int gamesLeft) {
   vector<double> v{1};
   for (int i = 1; i <= gamesLeft; ++i) {
     v.push_back(v.back() / 2);
@@ -30,17 +33,16 @@ int main() {
   auto pCRTie = 0.0;
   auto pMRTie = 0.0;
 
-  auto pOfkPoints = makeOddsOfkWins();
-  auto sum = 0.0;
-  for (auto d : pOfkPoints)
-    (cout << d << " "), sum += d;
-  cout << sum << "\n";
+  auto cPOfkPoints = makeOddsOfkWins(cGamesLeft);
+  auto mPOfkPoints = makeOddsOfkWins(mGamesLeft);
+  auto rPOfkPoints = makeOddsOfkWins(rGamesLeft);
 
-  sum = 0;
-  for (auto c = 0; c <= gamesLeft; ++c)
-    for (auto r = 0; r <= gamesLeft; ++r)
-      for (auto m = 0; m <= gamesLeft; ++m) {
-        auto p = pOfkPoints[c] * pOfkPoints[m] * pOfkPoints[r];
+
+  auto sum = 0.0;
+  for (auto c = 0; c <= cGamesLeft; ++c)
+    for (auto r = 0; r <= rGamesLeft; ++r)
+      for (auto m = 0; m <= mGamesLeft; ++m) {
+        auto p = cPOfkPoints[c] * mPOfkPoints[m] * rPOfkPoints[r];
         sum += p;
         auto cPoints = beginCPoints + c;
         auto mPoints = beginMPoints + m;
